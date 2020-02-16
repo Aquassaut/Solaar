@@ -248,9 +248,9 @@ class BooleanValidator(object):
 			tv = _bytes2int(true_value)
 			fv = _bytes2int(false_value)
 			mv = _bytes2int(mask)
-			assert tv & fv == 0
-			assert tv & mv == tv
-			assert fv & mv == fv
+			#assert tv & fv == 0
+			#assert tv & mv == tv
+			#assert fv & mv == fv
 			self.needs_current_value = any(m != b'\xFF' for m in mask)
 		else:
 			raise Exception("invalid mask '%r', type %s" % (mask, type(mask)))

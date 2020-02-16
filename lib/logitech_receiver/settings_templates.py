@@ -138,6 +138,8 @@ _FN_SWAP = ('fn-swap', _("Swap Fx function"),
 						 	+ '\n\n' +
 						 	_("When unset, the F1..F12 keys will activate their standard function,\n"
 						 	"and you must hold the FN key to activate their special function."))
+_PINCH_TO_ZOOM = ('pinch-to-zoom', _("Pinch to zoom"),
+							_("When set, pinching the touchpad results in a zoom motion"))
 _HAND_DETECTION = ('hand-detection', _("Hand Detection"),
 							_("Turn on illumination when the hands hover over the keyboard."))
 _BACKLIGHT = ('backlight', _("Backlight"),
@@ -191,6 +193,16 @@ def _feature_k375s_fn_swap():
 	return feature_toggle(_FN_SWAP[0], _F.K375S_FN_INVERSION,
 					label=_FN_SWAP[1], description=_FN_SWAP[2],
 					device_kind=(_DK.keyboard,))
+
+
+def _feature_pinch_to_zoom():
+	return feature_toggle(_PINCH_TO_ZOOM[0], _F.GESTURE_2,
+					label=_PINCH_TO_ZOOM[1], description=_PINCH_TO_ZOOM[2],
+					write_function_id=0x20,
+					true_value=b'\x01\x01\x04\x04',
+					false_value=b'\x01\x01\x04\x00',
+					device_kind=(_DK.keyboard,))
+
 
 # FIXME: This will enable all supported backlight settings, we should allow the users to select which settings they want to enable.
 def _feature_backlight2():
@@ -311,6 +323,7 @@ from collections import namedtuple
 _SETTINGS_LIST = namedtuple('_SETTINGS_LIST', [
 					'fn_swap',
 					'new_fn_swap',
+					'pinch_to_zoom',
 					'k375s_fn_swap',
 					'smooth_scroll',
 					'hi_res_scroll',
@@ -331,6 +344,7 @@ RegisterSettings = _SETTINGS_LIST(
 				fn_swap=_register_fn_swap,
 				new_fn_swap=None,
 				k375s_fn_swap=None,
+				pinch_to_zoom=None,
 				smooth_scroll=_register_smooth_scroll,
 				hi_res_scroll=None,
 				lowres_smooth_scroll=None,
@@ -348,6 +362,7 @@ FeatureSettings =  _SETTINGS_LIST(
 				fn_swap=_feature_fn_swap,
 				new_fn_swap=_feature_new_fn_swap,
 				k375s_fn_swap=_feature_k375s_fn_swap,
+				pinch_to_zoom=_feature_pinch_to_zoom,
 				smooth_scroll=None,
 				hi_res_scroll=_feature_hi_res_scroll,
 				lowres_smooth_scroll=_feature_lowres_smooth_scroll,
